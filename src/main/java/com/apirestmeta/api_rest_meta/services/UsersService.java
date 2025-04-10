@@ -18,11 +18,21 @@ public class UsersService {
         return usersRepository.save(user); 
     }
 
+    public Users updateUser(Integer id, Users userUpdate) {
+        Users userExist = usersRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id: " + id));
+
+                userExist.setUsername(userUpdate.getUsername());
+                userExist.setPassword(userUpdate.getPassword());
+
+        return usersRepository.save(userExist);
+    }
+
     public void deleteUser(Integer id) {
         if (usersRepository.existsById(id)) {
             usersRepository.deleteById(id);
         } else {
-            throw new RuntimeException("Sesion not found with id: " + id);
+            throw new RuntimeException("User not found with id: " + id);
         }
     }
 }
