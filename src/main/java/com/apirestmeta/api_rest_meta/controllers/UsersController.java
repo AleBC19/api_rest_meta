@@ -46,7 +46,11 @@ public class UsersController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
-        userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+        try{
+            userService.deleteUser(id);
+            return ResponseEntity.noContent().build();
+        }catch (Exception ex) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
