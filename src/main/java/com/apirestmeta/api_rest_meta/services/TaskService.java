@@ -20,6 +20,10 @@ public class TaskService {
         Users user = userRepository.findById(taskDto.getUserId())
             .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
     
+            boolean exists = taskRepository.existsByDescriptionAndUserIduser(taskDto.getDescription(), user.getIduser());
+            if (exists) {
+                throw new RuntimeException("El usuario ya tiene una tarea con esa descripción.");
+            }
         Task task = taskDto.toEntity(user);
         return taskRepository.save(task);
     }

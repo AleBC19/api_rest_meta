@@ -3,13 +3,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.apirestmeta.api_rest_meta.dtos.TaskDTO;
@@ -43,9 +40,9 @@ public class TaskController {
             return ResponseEntity.status(HttpStatus.CREATED).body(new TaskDTO(savedTask));
         }catch(Exception ex){
             Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("status", HttpStatus.NOT_FOUND.toString()); 
+            errorResponse.put("status", HttpStatus.BAD_REQUEST.toString()); 
             errorResponse.put("message", ex.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }
 }
