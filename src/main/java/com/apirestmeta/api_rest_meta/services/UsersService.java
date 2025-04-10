@@ -12,6 +12,9 @@ public class UsersService {
         this.usersRepository = usersRepository; 
     }
     public Users createUser(Users user) {
+        if(usersRepository.existsByUsername(user.getUsername())){
+            throw new RuntimeException("El nombre de usuario ya existe.");
+        }
         return usersRepository.save(user); 
     }
 

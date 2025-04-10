@@ -34,7 +34,7 @@ public class UsersController {
 
     @PostMapping(consumes = {"application/json", "application/json;charset=UTF-8"})
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Users> createSesion(@RequestBody Users user) {
+    public ResponseEntity<Users> createUser(@RequestBody Users user) {
         try {
             Users createdUser = userService.createUser(user);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
