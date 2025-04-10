@@ -27,4 +27,20 @@ public class TaskService {
         Task task = taskDto.toEntity(user);
         return taskRepository.save(task);
     }
+
+    public Task updateTask(Integer idTask, TaskDTO taskDto) {
+        Task existingTask = taskRepository.findById(idTask)
+            .orElseThrow(() -> new RuntimeException("Tarea no encontrada con id: " + idTask));
+    
+        existingTask.setDescription(taskDto.getDescription());
+        existingTask.setState(taskDto.getState());
+    
+        if (taskDto.getUserId() != null) {
+            Users user = userRepository.findById(taskDto.getUserId())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado con id: " + taskDto.getUserId()));
+            existingTask.setUser(user);
+        }
+        return taskRepository.save(existingTask);
+    }
+    
 }

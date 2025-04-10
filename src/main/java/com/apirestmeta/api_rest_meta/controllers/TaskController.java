@@ -15,7 +15,9 @@ import com.apirestmeta.api_rest_meta.repositories.TaskRepository;
 import com.apirestmeta.api_rest_meta.services.TaskService;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 
@@ -43,6 +45,16 @@ public class TaskController {
             errorResponse.put("status", HttpStatus.BAD_REQUEST.toString()); 
             errorResponse.put("message", ex.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
+        }
+    }
+
+    @PutMapping("/update/{idTask}")
+    public ResponseEntity<TaskDTO> updateTask(@PathVariable Integer idTask, @RequestBody TaskDTO taskDto) {
+        try {
+            Task updatedTask = taskService.updateTask(idTask, taskDto);
+            return ResponseEntity.status(HttpStatus.OK).body(new TaskDTO(updatedTask));
+        } catch (Exception ex) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 }
