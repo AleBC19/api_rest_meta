@@ -14,4 +14,12 @@ public class UsersService {
     public Users createUser(Users user) {
         return usersRepository.save(user); 
     }
+
+    public void deleteUser(Integer id) {
+        if (usersRepository.existsById(id)) {
+            usersRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Sesion not found with id: " + id);
+        }
+    }
 }
