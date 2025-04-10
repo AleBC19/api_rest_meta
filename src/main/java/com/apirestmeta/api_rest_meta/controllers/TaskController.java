@@ -14,6 +14,7 @@ import com.apirestmeta.api_rest_meta.models.Task;
 import com.apirestmeta.api_rest_meta.repositories.TaskRepository;
 import com.apirestmeta.api_rest_meta.services.TaskService;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +56,19 @@ public class TaskController {
             return ResponseEntity.status(HttpStatus.OK).body(new TaskDTO(updatedTask));
         } catch (Exception ex) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<Object> deleteTask(@PathVariable Integer id) {
+        try{
+            taskService.deleteTask(id);
+            return ResponseEntity.noContent().build();
+        }catch (Exception ex) {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("status", HttpStatus.NOT_FOUND.toString()); 
+            errorResponse.put("message", ex.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
 }
