@@ -71,6 +71,4 @@ public class Users {
 
     @OneToMany(mappedBy = "user")
     private List<Task> tasks;
-
-    
 }
