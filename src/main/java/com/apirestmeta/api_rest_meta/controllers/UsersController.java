@@ -1,6 +1,8 @@
 package com.apirestmeta.api_rest_meta.controllers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -56,12 +58,15 @@ public class UsersController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable Integer id) {
+    public ResponseEntity<Object> deleteUser(@PathVariable Integer id) {
         try{
             userService.deleteUser(id);
             return ResponseEntity.noContent().build();
         }catch (Exception ex) {
-            return ResponseEntity.notFound().build();
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("status", HttpStatus.NOT_FOUND.toString()); 
+            errorResponse.put("message", ex.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
 }

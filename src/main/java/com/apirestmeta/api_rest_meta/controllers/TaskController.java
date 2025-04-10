@@ -1,5 +1,7 @@
 package com.apirestmeta.api_rest_meta.controllers;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,12 +37,15 @@ public class TaskController {
     } 
 
     @PostMapping(consumes = {"application/json", "application/json;charset=UTF-8"})
-    public ResponseEntity<TaskDTO> createTask(@RequestBody TaskDTO taskDto) {
+    public ResponseEntity<Object> createTask(@RequestBody TaskDTO taskDto) {
         try{
             Task savedTask = taskService.createTask(taskDto);
             return ResponseEntity.status(HttpStatus.CREATED).body(new TaskDTO(savedTask));
         }catch(Exception ex){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); 
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("status", HttpStatus.NOT_FOUND.toString()); 
+            errorResponse.put("message", ex.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
 }
