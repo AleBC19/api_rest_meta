@@ -6,4 +6,5 @@ import com.apirestmeta.api_rest_meta.models.Users;
 
 public interface UsersRepository extends JpaRepository<Users, Integer>{
     boolean existsByUsername(String username);
+    boolean existsByUsernameAndPassword(String username, String password);
 }
