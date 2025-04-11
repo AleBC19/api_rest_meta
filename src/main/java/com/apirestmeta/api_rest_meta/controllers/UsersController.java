@@ -37,23 +37,27 @@ public class UsersController {
 
     @PostMapping(consumes = {"application/json", "application/json;charset=UTF-8"})
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Users> createUser(@RequestBody Users user) {
+    public ResponseEntity<Object> createUser(@RequestBody Users user) {
         try {
             Users createdUser = userService.createUser(user);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message", ex.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse);
         }
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Users> putMethodName(@PathVariable Integer id, @RequestBody Users userUpdate) {
+    public ResponseEntity<Object> putMethodName(@PathVariable Integer id, @RequestBody Users userUpdate) {
         try{
             Users sesionMod = userService.updateUser(id, userUpdate);
             return ResponseEntity.ok(sesionMod);
         }catch(Exception ex) {
-            return ResponseEntity.notFound().build(); 
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("message", ex.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
         }
     }
 
